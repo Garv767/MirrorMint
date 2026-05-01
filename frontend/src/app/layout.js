@@ -11,6 +11,9 @@ const poppins = Poppins({
 export const metadata = {
   title: "MirrorMint | Strategy Console",
   description: "Enterprise-grade trading strategy management platform.",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({ children }) {

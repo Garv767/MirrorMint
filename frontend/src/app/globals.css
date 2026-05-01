@@ -47,7 +47,7 @@ body {
 }
 
 .input-field {
-  @apply w-full border border-border-medium rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all;
+  @apply w-full border border-border-medium rounded pr-3 pl-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all;
 }
 
 .card {

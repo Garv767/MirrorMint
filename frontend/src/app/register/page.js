@@ -3,12 +3,14 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth';
-import { Lock, Mail, AlertCircle, Loader2, UserPlus } from 'lucide-react';
+import { Lock, Mail, AlertCircle, Loader2, UserPlus, ShieldCheck, Eye, EyeOff } from 'lucide-react';
 
 export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [inviteCode, setInviteCode] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { register } = useAuth();
@@ -29,7 +31,7 @@ export default function RegisterPage() {
 
     setIsSubmitting(true);
 
-    const result = await register(email, password);
+    const result = await register(email, password, inviteCode);
     if (!result.success) {
       setError(result.message);
       setIsSubmitting(false);
@@ -65,7 +67,7 @@ export default function RegisterPage() {
                   id="email"
                   type="email"
                   required
-                  className="input-field pl-10"
+                  className="input-field !pl-12"
                   placeholder="name@company.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -83,13 +85,20 @@ export default function RegisterPage() {
                 </div>
                 <input
                   id="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   required
-                  className="input-field pl-10"
+                  className="input-field !pl-12 pr-10"
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-text-secondary hover:text-brand-blue transition-colors"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
               </div>
             </div>
 
@@ -103,12 +112,38 @@ export default function RegisterPage() {
                 </div>
                 <input
                   id="confirm-password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   required
-                  className="input-field pl-10"
+                  className="input-field !pl-12 pr-10"
                   placeholder="••••••••"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-text-secondary hover:text-brand-blue transition-colors"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-text-main mb-1.5" htmlFor="invite-code">
+                Admin Invite Code (Optional)
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-text-secondary">
+                  <ShieldCheck size={18} />
+                </div>
+                <input
+                  id="invite-code"
+                  type="text"
+                  className="input-field !pl-12"
+                  placeholder="e.g. PRIME-ADMIN-2026"
+                  value={inviteCode}
+                  onChange={(e) => setInviteCode(e.target.value)}
                 />
               </div>
             </div>
