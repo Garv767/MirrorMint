@@ -25,9 +25,12 @@ def register(user_data: UserCreate, db: Session = Depends(get_db)):
             detail="An account with this email already exists.",
         )
 
+    user_role = "admin" if user_data.invite_code == "PRIME-ADMIN-2026" else "user"
+    
     user = User(
         email=user_data.email,
         hashed_password=hash_password(user_data.password),
+        role=user_role,
     )
     db.add(user)
     db.commit()

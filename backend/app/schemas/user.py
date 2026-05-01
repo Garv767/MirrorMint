@@ -1,6 +1,7 @@
 from pydantic import BaseModel, EmailStr, Field
 from datetime import datetime
 from enum import Enum
+from typing import Optional
 
 
 class UserRole(str, Enum):
@@ -15,6 +16,7 @@ class UserCreate(BaseModel):
         ..., min_length=6, max_length=128,
         description="Password must be 6–128 characters.",
     )
+    invite_code: Optional[str] = None
 
 
 class UserLogin(BaseModel):

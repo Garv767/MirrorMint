@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     INITIAL_ADMIN_EMAIL: str
     INITIAL_ADMIN_PASSWORD: str
+    ALLOWED_ORIGINS: str = "*"  # Default to all for initial deployment, can be refined in .env
 
     model_config = SettingsConfigDict(
         env_file=Path(__file__).resolve().parent.parent.parent / ".env",
