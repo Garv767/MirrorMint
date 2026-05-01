@@ -67,20 +67,20 @@ def get_strategy(
     "",
     response_model=StrategyResponse,
     status_code=status.HTTP_201_CREATED,
-    summary="Create a new strategy (Admin only)",
+    summary="Create a new strategy",
 )
 def create_strategy(
     data: StrategyCreate,
     db: Session = Depends(get_db),
-    admin: User = Depends(require_admin),
+    current_user: User = Depends(get_current_user),
 ):
-    """Create a new trading strategy. Requires admin role."""
+    """Create a new trading strategy. Any authenticated user can create one."""
     strategy = Strategy(
         title=data.title,
         bot_type=data.bot_type.value,
         risk_level=data.risk_level.value,
         target_roi=data.target_roi,
-        created_by=admin.id,
+        created_by=current_user.id,
     )
     db.add(strategy)
     db.commit()
@@ -91,20 +91,26 @@ def create_strategy(
 @router.put(
     "/{strategy_id}",
     response_model=StrategyResponse,
-    summary="Update a strategy (Admin only)",
+    summary="Update a strategy (Admin or Owner)",
 )
 def update_strategy(
     strategy_id: int,
     data: StrategyUpdate,
     db: Session = Depends(get_db),
-    admin: User = Depends(require_admin),
+    current_user: User = Depends(get_current_user),
 ):
-    """Update an existing strategy. Requires admin role."""
+    """Update an existing strategy. Requires admin role or ownership."""
     strategy = db.query(Strategy).filter(Strategy.id == strategy_id).first()
     if not strategy:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Strategy not found.",
+        )
+    
+    if current_user.role != "admin" and strategy.created_by != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to update this strategy.",
         )
 
     update_fields = data.model_dump(exclude_unset=True)
@@ -122,19 +128,25 @@ def update_strategy(
 @router.delete(
     "/{strategy_id}",
     status_code=status.HTTP_204_NO_CONTENT,
-    summary="Delete a strategy (Admin only)",
+    summary="Delete a strategy (Admin or Owner)",
 )
 def delete_strategy(
     strategy_id: int,
     db: Session = Depends(get_db),
-    admin: User = Depends(require_admin),
+    current_user: User = Depends(get_current_user),
 ):
-    """Delete a strategy by ID. Requires admin role."""
+    """Delete a strategy by ID. Requires admin role or ownership."""
     strategy = db.query(Strategy).filter(Strategy.id == strategy_id).first()
     if not strategy:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Strategy not found.",
+        )
+        
+    if current_user.role != "admin" and strategy.created_by != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to delete this strategy.",
         )
     db.delete(strategy)
     db.commit()
