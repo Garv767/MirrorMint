@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@theme {
+  --font-poppins: "Poppins", sans-serif;
+  
+  --color-brand-blue: #1D4ED8;
+  --color-brand-green: #059669;
+  --color-bg-white: #FFFFFF;
+  --color-bg-surface: #F9FAFB;
+  --color-text-main: #111827;
+  --color-text-secondary: #6B7280;
+  --color-border-light: #E5E7EB;
+  --color-border-medium: #D1D5DB;
+
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+  --spacing-16: 64px;
+}
+
+:root {
+  --background: var(--color-bg-white);
+  --foreground: var(--color-text-main);
+}
+
+body {
+  font-family: var(--font-poppins);
+  background-color: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Utilities */
+.btn-primary {
+  @apply bg-brand-blue text-white px-4 py-2 rounded-md font-medium hover:bg-brand-blue/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-secondary {
+  @apply bg-white text-text-main border border-border-medium px-4 py-2 rounded-md font-medium hover:bg-bg-surface transition-colors;
+}
+
+.input-field {
+  @apply w-full border border-border-medium rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all;
+}
+
+.card {
+  @apply bg-white border border-border-light rounded-lg shadow-sm overflow-hidden;
+}
+
+.table-header {
+  @apply bg-bg-surface text-text-secondary text-left py-3 px-4 font-semibold text-xs uppercase tracking-wider border-b border-border-light;
+}
+
+.table-cell {
+  @apply py-3 px-4 border-b border-border-light text-sm;
+}
