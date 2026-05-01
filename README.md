@@ -22,7 +22,8 @@ MirrorMint follows a clean, modular architecture:
 
 ## 🌐 Live Demo
 - **Frontend:** [https://mirrormint-web.netlify.app](https://mirrormint-web.netlify.app)
-- **Backend API:** `[Your Backend URL Here]`
+- **Backend API:** [https://mirrormint-production.up.railway.app/](https://mirrormint-production.up.railway.app/)
+- **API Documentation (Swagger):** [https://mirrormint-production.up.railway.app/docs](https://mirrormint-production.up.railway.app/docs)
 
 ---
 
@@ -72,21 +73,7 @@ The frontend is currently optimized for Netlify deployment:
 ### 3. Demo Admin Testing
 To test administrative features without manual database access:
 - Use the registration page and enter the invite code: `PRIME-ADMIN-2026`.
-- This will grant your account the `admin` role, allowing you to manage all strategies on the platform.
-
----
-
-## 🔐 API Documentation (v1)
-
-| Method | Endpoint | Auth | Role | Description |
-|--------|----------|------|------|-------------|
-| `POST` | `/auth/register` | None | Any | Create user with optional `invite_code` |
-| `POST` | `/auth/login` | None | Any | Authenticate & receive JWT |
-| `GET` | `/auth/me` | JWT | Any | Get current user identity |
-| `GET` | `/strategies` | JWT | Any | List all active strategies |
-| `POST` | `/strategies` | JWT | Any | Create a new strategy |
-| `PUT` | `/strategies/{id}` | JWT | admin/owner | Modify existing strategy |
-| `DELETE`| `/strategies/{id}` | JWT | admin/owner | Remove a strategy |
+- This will automatically grant your account the **Admin** role upon creation.
 
 ---
 
@@ -107,8 +94,3 @@ Implement **Redis** to cache frequently accessed strategy data and active sessio
 
 ### 4. High Availability
 Deploy behind an **NGINX/AWS ALB** load balancer with horizontal scaling (Auto-scaling groups or Kubernetes). Use **CDN** (Cloudflare/Vercel) for optimized frontend delivery.
-
----
-
-## 📄 License
-MirrorMint Proprietary Strategy Software. All rights reserved.
