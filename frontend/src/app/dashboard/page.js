@@ -79,19 +79,16 @@ export default function DashboardPage() {
           <h1 className="text-2xl font-bold text-text-main">Strategy Console</h1>
           <p className="text-text-secondary text-sm">Manage and monitor your automated trading pipelines.</p>
         </div>
-        
-        {isAdmin && (
-          <button 
-            onClick={() => {
-              setEditingStrategy(null);
-              setIsModalOpen(true);
-            }}
-            className="btn-primary flex items-center gap-2 self-start md:self-auto"
-          >
-            <Plus size={18} />
-            Create Strategy
-          </button>
-        )}
+        <button 
+          onClick={() => {
+            setEditingStrategy(null);
+            setIsModalOpen(true);
+          }}
+          className="btn-primary flex items-center gap-2 self-start md:self-auto"
+        >
+          <Plus size={18} />
+          Create Strategy
+        </button>
       </div>
 
       {/* Stats Bar */}
@@ -139,7 +136,7 @@ export default function DashboardPage() {
             <input
               type="text"
               placeholder="Search by title or type..."
-              className="input-field pl-9 py-1.5 text-sm"
+              className="input-field !pl-11 py-1.5 text-sm"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -151,11 +148,21 @@ export default function DashboardPage() {
           >
             <RefreshCw size={18} className={loading ? 'animate-spin' : ''} />
           </button>
-          <div className="h-8 w-[1px] bg-border-light mx-1" />
-          <button className="p-2 text-text-secondary hover:text-brand-blue flex items-center gap-2 text-sm font-medium">
-            <Filter size={16} />
-            Filters
-          </button>
+        </div>
+
+        {/* User Guidance Section */}
+        <div className="bg-brand-blue/5 border border-brand-blue/10 rounded-lg p-4 flex items-start gap-4">
+          <div className="bg-brand-blue text-white p-1.5 rounded-md mt-0.5">
+            <Shield size={16} />
+          </div>
+          <div>
+            <h3 className="text-sm font-bold text-text-main">
+              Strategy Management
+            </h3>
+            <p className="text-xs text-text-secondary leading-relaxed mt-1">
+              You can monitor all active trading strategies in the global pool. You are authorized to create new strategies, and you can edit or delete any strategies that you have personally created. Administrators have full access to manage all strategies.
+            </p>
+          </div>
         </div>
 
         {loading ? (

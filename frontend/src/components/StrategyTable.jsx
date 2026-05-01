@@ -50,7 +50,7 @@ export default function StrategyTable({ strategies, onEdit, onDelete }) {
             <th className="table-header text-center">Risk Level</th>
             <th className="table-header text-right">Target ROI</th>
             <th className="table-header">Created By</th>
-            {isAdmin && <th className="table-header text-right">Actions</th>}
+            <th className="table-header text-right">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -81,8 +81,8 @@ export default function StrategyTable({ strategies, onEdit, onDelete }) {
                   </span>
                 </div>
               </td>
-              {isAdmin && (
-                <td className="table-cell text-right">
+              <td className="table-cell text-right">
+                {(isAdmin || strategy.created_by === user?.id) && (
                   <div className="flex justify-end gap-2">
                     <button 
                       onClick={() => onEdit(strategy)}
@@ -99,8 +99,8 @@ export default function StrategyTable({ strategies, onEdit, onDelete }) {
                       <Trash2 size={14} />
                     </button>
                   </div>
-                </td>
-              )}
+                )}
+              </td>
             </tr>
           ))}
         </tbody>
