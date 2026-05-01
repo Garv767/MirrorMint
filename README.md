@@ -20,6 +20,12 @@ MirrorMint follows a clean, modular architecture:
 
 ---
 
+## 🌐 Live Demo
+- **Frontend:** [https://mirrormint-web.netlify.app](https://mirrormint-web.netlify.app)
+- **Backend API:** `[Your Backend URL Here]`
+
+---
+
 ## 🏗️ Getting Started
 
 ### Prerequisites
@@ -31,12 +37,13 @@ MirrorMint follows a clean, modular architecture:
 ```bash
 cd backend
 python -m venv venv
-.\venv\Scripts\activate  # Windows
+source venv/Scripts/activate  # Unix
+.\venv\Scripts\activate      # Windows
 pip install -r requirements.txt
 
 # Configure .env
 cp .env.example .env
-# Set NEON_DATABASE_URI and SECRET_KEY
+# Set NEON_DATABASE_URI, SECRET_KEY, and ALLOWED_ORIGINS
 ```
 Run server:
 ```bash
@@ -44,19 +51,28 @@ uvicorn app.main:app --reload
 ```
 *API Documentation available at http://localhost:8000/docs*
 
-### 2. Frontend Setup
-```bash
-cd frontend
-npm install
+### 2. Deployment
 
-# Configure .env.local
-NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
-```
-Run development server:
-```bash
-npm run dev
-```
-*Console available at http://localhost:3000*
+#### Backend (Recommended: [Railway.app](https://railway.app/))
+Railway is recommended as it handles monorepos and FastAPI exceptionally well:
+1. Connect your GitHub repository.
+2. Set the **Root Directory** to `backend`.
+3. Railway will automatically detect the `Procfile` and start the server using Gunicorn.
+4. Add your `.env` variables in the Railway dashboard.
+
+#### Frontend ([Netlify](https://www.netlify.com/))
+The frontend is currently optimized for Netlify deployment:
+1. **Base directory:** `frontend`
+2. **Build command:** `npm run build`
+3. **Publish directory:** `frontend/.next` (or default for Next.js)
+4. **Env Var:** `NEXT_PUBLIC_API_URL` set to your live Railway API URL.
+
+---
+
+### 3. Demo Admin Testing
+To test administrative features without manual database access:
+- Use the registration page and enter the invite code: `PRIME-ADMIN-2026`.
+- This will grant your account the `admin` role, allowing you to manage all strategies on the platform.
 
 ---
 
@@ -64,13 +80,13 @@ npm run dev
 
 | Method | Endpoint | Auth | Role | Description |
 |--------|----------|------|------|-------------|
-| `POST` | `/auth/register` | None | Any | Create new user profile |
+| `POST` | `/auth/register` | None | Any | Create user with optional `invite_code` |
 | `POST` | `/auth/login` | None | Any | Authenticate & receive JWT |
 | `GET` | `/auth/me` | JWT | Any | Get current user identity |
-| `GET` | `/strategies` | JWT | user/admin | List all active strategies |
-| `POST` | `/strategies` | JWT | admin | Create a new strategy |
-| `PUT` | `/strategies/{id}` | JWT | admin | Modify existing strategy |
-| `DELETE`| `/strategies/{id}` | JWT | admin | Remove a strategy |
+| `GET` | `/strategies` | JWT | Any | List all active strategies |
+| `POST` | `/strategies` | JWT | Any | Create a new strategy |
+| `PUT` | `/strategies/{id}` | JWT | admin/owner | Modify existing strategy |
+| `DELETE`| `/strategies/{id}` | JWT | admin/owner | Remove a strategy |
 
 ---
 
